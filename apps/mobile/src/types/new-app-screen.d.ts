@@ -1,0 +1,1 @@
+declare module '@react-native/new-app-screen';

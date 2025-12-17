@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "600500761018",
+    "project_id": "splitbuddy-c595c",
+    "storage_bucket": "splitbuddy-c595c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:600500761018:android:727ead884c9e20a24dad83",
+        "android_client_info": {
+          "package_name": "com.splitbuddy.main"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "600500761018-tsd59o8n6hkbdkm9ta7ajf23ssuvbh93.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.splitbuddy.main",
+            "certificate_hash": "94af2bd6de8e1b7f292c92ccea3695d2a60f5134"
+          }
+        },
+        {
+          "client_id": "600500761018-9c5c73b53b0du24k3nv21r21b5vvp1gm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTP_xHfweDfSoXjFPBJeSEL9GD20sfk7w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "600500761018-9c5c73b53b0du24k3nv21r21b5vvp1gm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

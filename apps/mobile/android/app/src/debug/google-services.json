@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "742527822495",
+    "firebase_url": "https://gharkharch-9c5e5-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "gharkharch-9c5e5",
+    "storage_bucket": "gharkharch-9c5e5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742527822495:android:bafa9eead14bbe843950aa",
+        "android_client_info": {
+          "package_name": "com.splitbuddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "742527822495-3qtb7besl3jdqute0rgadvbrsrcsksv1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.splitbuddy",
+            "certificate_hash": "94af2bd6de8e1b7f292c92ccea3695d2a60f5134"
+          }
+        },
+        {
+          "client_id": "742527822495-efdt9q47b8e9qcsdlaj60na0eff3kmgi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.splitbuddy",
+            "certificate_hash": "bd7ce7d7ce34b0cd008f4cf9424c10fee1819c2a"
+          }
+        },
+        {
+          "client_id": "742527822495-7iljakd5ses5rs82hcst4br5henrproi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTkxdfaTMI_qVaBk_1O1I-tSG6ZlWs84U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742527822495-7iljakd5ses5rs82hcst4br5henrproi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "742527822495-0s6rr9g42k351da3jk3iticm4sv87sd5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.GharKharcha"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

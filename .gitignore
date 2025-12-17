@@ -1,0 +1,90 @@
+#################################
+# General
+#################################
+.DS_Store
+*.log
+logs/
+coverage/
+.cache/
+temp/
+
+#################################
+# Environment files
+#################################
+.env
+.env.*
+*.local
+dev.env.js
+
+#################################
+# Dependencies
+#################################
+node_modules/
+**/node_modules/
+
+#################################
+# Build outputs
+#################################
+dist/
+build/
+out/
+.tmp/
+
+#################################
+# TurboRepo
+#################################
+.turbo/
+
+#################################
+# pnpm
+#################################
+.pnpm-store/
+
+#################################
+# Netlify (API)
+#################################
+.netlify/
+apps/api/.netlify/
+
+#################################
+# React Native - Android
+#################################
+apps/mobile/android/.gradle/
+apps/mobile/android/build/
+apps/mobile/android/app/build/
+apps/mobile/android/app/.cxx/
+apps/mobile/android/local.properties
+apps/mobile/android/**/*.keystore
+apps/mobile/android/**/*.jks
+
+#################################
+# React Native - iOS
+#################################
+apps/mobile/ios/Pods/
+apps/mobile/ios/build/
+apps/mobile/ios/DerivedData/
+apps/mobile/ios/*.xcworkspace
+apps/mobile/ios/*.xcuserdata
+apps/mobile/ios/*.xcuserstate
+
+#################################
+# React Native tooling
+#################################
+apps/mobile/.bundle/
+apps/mobile/vendor/
+
+#################################
+# IDE / Editor
+#################################
+.vscode/
+.idea/
+*.swp
+*.swo
+
+#################################
+# Database / backups
+#################################
+*.sqlite
+*.sqlite3
+*.db
+backup.sql
