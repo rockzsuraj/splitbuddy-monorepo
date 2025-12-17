@@ -2,6 +2,7 @@
   "name": "splitbuddy-monorepo",
   "private": true,
   "version": "1.0.0",
+  "packageManager": "pnpm@10.26.0",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -16,5 +17,8 @@
     "dev:mobile:android:all": "pnpm dev:mobile & pnpm dev:mobile:android",
     "dev:mobile:ios:all": "pnpm dev:mobile & pnpm dev:mobile:ios",
     "dev": "pnpm dev:api & pnpm dev:mobile"
+  },
+  "devDependencies": {
+    "turbo": "2.6.3"
   }
 }
