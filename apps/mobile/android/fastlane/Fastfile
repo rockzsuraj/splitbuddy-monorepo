@@ -1,0 +1,14 @@
+default_platform(:android)
+
+platform :android do
+  desc "Distribute dev build to Firebase"
+  lane :distribute do
+    gradle(task: "clean assembleRelease")
+    firebase_app_distribution(
+      app: ENV["ANDROID_APP_ID"],
+      groups: "dev-testers",
+      apk_path: "app/build/outputs/apk/release/app-release.apk",
+      release_notes: "Dev build from #{ENV['GITHUB_REF_NAME'] || 'local'}"
+    )
+  end
+end
