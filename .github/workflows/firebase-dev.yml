@@ -10,14 +10,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
-      - uses: pnpm/action-setup@v4
-      - run: pnpm install --frozen-lockfile
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
       - name: Distribute Android
         run: pnpm --filter @splitbuddy/mobile exec -- fastlane android distribute
+        working-directory: apps/mobile/android
         env:
           ANDROID_APP_ID: "1:742527822495:android:bafa9eead14bbe843950aa"
           FIREBASE_APP_DISTRIBUTION_SERVICE_CREDENTIALS: ${{ secrets.FIREBASE_DEV_SERVICE_ACCOUNT }}
