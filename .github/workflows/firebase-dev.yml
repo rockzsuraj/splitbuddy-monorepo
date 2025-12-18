@@ -1,4 +1,5 @@
 name: Dev Build to Firebase
+
 on:
   push:
     branches: [develop]
@@ -8,20 +9,27 @@ on:
 jobs:
   android:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Build & Distribute Android
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Build Debug APK
+        run: |
+          cd apps/mobile/android
+          chmod +x ./gradlew
+          ./gradlew clean assembleDebug
+
+      - name: Upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.7.1
         with:
           appId: 1:742527822495:android:bafa9eead14bbe843950aa
-          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}  # This was missing!
-          file: apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk     # Use debug APK
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          file: apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk
           groups: dev-testers
-          releaseNotes: Dev build from develop branch
-        env:
-          # Build APK first
-          BUILD_COMMAND: |
-            chmod +x ./android/gradlew
-            cd apps/mobile/android
-            ./gradlew clean assembleRelease
+          releaseNotes: "Dev debug build from develop branch"
