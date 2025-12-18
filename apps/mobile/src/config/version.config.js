@@ -1,0 +1,5 @@
+module.exports = {
+  APP_VERSION: '9.3.3',
+  IOS_BUILD_VERSION: 1,
+  ADR_BUILD_VERSION: 9000047,
+};

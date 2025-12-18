@@ -1,19 +1,19 @@
-import { NativeModules } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 
-export type Env = 'dev' | 'staging' | 'prod';
-
-export type BuildInfo = {
-  version: string;
-  buildNumber: string;
+type EnvManagerType = {
+  getEnv(): Promise<string>;
+  switchEnv(env: string): void;
+  getBuildInfo(): Promise<{
+    version: string;
+    buildNumber: string;
+    platform: string;
+  }>;
 };
 
-interface EnvManagerType {
-  // READ
-  getEnv(): Promise<Env>;
-  getBuildInfo(): Promise<BuildInfo>;
+const EnvManager: EnvManagerType = NativeModules.EnvManager;
 
-  // SINGLE ACTION (native-owned)
-  switchEnv(env: Env): void;
+if (__DEV__ && !EnvManager) {
+  throw new Error('EnvManager native module is not linked');
 }
 
-export const EnvManager = NativeModules.EnvManager as EnvManagerType;
+export default EnvManager;

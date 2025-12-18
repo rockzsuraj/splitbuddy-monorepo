@@ -32,18 +32,8 @@ export const GroupListItem: FC<GroupListItemProps> = ({
     return `₹${n.toFixed(0)}`;
   };
 
-  const lightColors: Record<string, string> = {
-    home: '#FFE0B2',
-    'flight-takeoff': '#FFF3E0',
-    'local-bar': '#F5F5DC',
-    group: '#E0F2F1',
-    'family-restroom': '#E0F7FA',
-    groups: '#E0E0E0',
-  };
-
-
   const iconName = item?.group_icon || 'group';
-  const iconBg = lightColors[iconName] || lightColors['groups'];
+  const iconBg = theme.colors.secondary;
 
   // ---- use API data if available, else fallback ----
   // assuming backend returns: total_expense, balances, members, lastActivity etc.
@@ -78,7 +68,7 @@ export const GroupListItem: FC<GroupListItemProps> = ({
       onPress={() => handleGroupAndTransaction(item)}
       style={({ pressed }) => [
         styles.card,
-        { backgroundColor: theme.colors.pr },
+        { backgroundColor: theme.colors.cardSoft },
         pressed && styles.pressed,
       ]}
     >

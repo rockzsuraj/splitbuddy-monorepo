@@ -1,4 +1,4 @@
-import { EnvManager } from '../native/EnvManager';
+import EnvManager  from '../native/EnvManager';
 import { Platform } from 'react-native';
 
 const DEV_PORT = 8888;
@@ -18,5 +18,5 @@ export async function getBaseUrl() {
   }
 
   // Production
-  return `https://splitbuddy-1.netlify.app${API_PATH}`;
+  return `https://splitbuddy-monorepo-api.vercel.app/${API_PATH}`;
 }

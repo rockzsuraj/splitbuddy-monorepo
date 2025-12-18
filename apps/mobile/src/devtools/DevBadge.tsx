@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Pressable, Text, StyleSheet, View } from 'react-native';
-import { EnvManager } from '@/native/EnvManager';
+import EnvManager  from '@/native/EnvManager';
 
 type Props = {
   onPress: () => void;
@@ -17,8 +17,6 @@ export default function DevBadge({ onPress }: Props) {
   const [buildInfo, setBuildInfo] = useState<BuildInfo | null>(null);
   const [env, setEnv] = useState<AppEnv | null>(null);
 
-  console.log('current env', env, buildInfo);
-
   useEffect(() => {
     let mounted = true;
 
@@ -27,10 +25,6 @@ export default function DevBadge({ onPress }: Props) {
       EnvManager.getEnv(),
     ])
       .then(([build, currentEnv]) => {
-        console.log('build', build);
-        console.log('current env', currentEnv);
-        
-        
         if (!mounted) return;
         setBuildInfo(build);
         setEnv(currentEnv);

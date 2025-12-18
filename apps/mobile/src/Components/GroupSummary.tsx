@@ -279,7 +279,7 @@ return (
           <Icon
             name={group?.group_icon || 'groups'}
             size={20}
-            color={theme.colors.text}
+            color={theme.colors.background}
           />
         </View>
         <View>
@@ -868,7 +868,7 @@ const makeStyles = (theme: ReturnType<typeof useTheme>) =>
       marginBottom: 12,
       padding: 12,
       borderRadius: 16,
-      backgroundColor: theme.colors.secondaryBackGround,
+      backgroundColor: theme.colors.cardSoft,
       borderWidth: 1,
       borderColor: theme.colors.border,
       shadowColor: theme.colors.black,
@@ -892,7 +892,7 @@ const makeStyles = (theme: ReturnType<typeof useTheme>) =>
       borderRadius: 10,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: theme.colors.secondaryCard,
+      backgroundColor: theme.colors.secondary,
       marginRight: 8,
     },
     groupTitle: {
@@ -1015,7 +1015,7 @@ const makeStyles = (theme: ReturnType<typeof useTheme>) =>
       width: 24,
       height: 24,
       borderRadius: 999,
-      backgroundColor: theme.colors.secondaryCard,
+      backgroundColor: theme.colors.secondary,
       justifyContent: 'center',
       alignItems: 'center',
       marginRight: 6,
@@ -1023,7 +1023,7 @@ const makeStyles = (theme: ReturnType<typeof useTheme>) =>
     avatarSmallText: {
       fontSize: 12,
       fontWeight: '600',
-      color: theme.colors.text,
+      color: theme.colors.background,
     },
     memberNameText: {
       fontSize: 12,

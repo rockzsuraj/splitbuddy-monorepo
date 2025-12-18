@@ -8,9 +8,11 @@ import {
   Pressable,
   ScrollView,
 } from 'react-native';
-import { EnvManager } from '@/native/EnvManager';
+import  EnvManager  from '@/native/EnvManager';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import { DEV_ENCRYPTED_KEYS } from '@/devtools/devEncryptedKeys';
+import { DevSettings } from 'react-native';
+
 
 type Props = {
   visible: boolean;
@@ -33,23 +35,27 @@ export default function DevMenuModal({ visible, onClose }: Props) {
     Record<string, { value: string; sensitive: boolean }>
   >({});
 
-  useEffect(() => {
-    if (!visible || !__DEV__) return;
+useEffect(() => {
+  if (!visible || !__DEV__) return;
 
-    Promise.all([
-      EnvManager.getBuildInfo(),
-      EnvManager.getEnv(),
-    ]).then(([build, currentEnv]) => {
-      setBuildInfo(build);
-      setEnv(currentEnv);
-    });
-  }, [visible]);
-
+  Promise.all([
+    EnvManager.getBuildInfo(),  // ✅ Promise resolves
+    EnvManager.getEnv(),        // ✅ Promise resolves
+  ]).then(([build, currentEnv]) => {
+    setBuildInfo(build);
+    setEnv(currentEnv);
+  });
+}, [visible]);
   /* -------------------- ENV SWITCH -------------------- */
 
   const switchEnv = (nextEnv: AppEnv) => {
+    console.log('nextEnv', nextEnv);
+    console.log('env', env);
+    
+    
     if (nextEnv === env) return;
     EnvManager.switchEnv(nextEnv);
+    DevSettings.reload();
   };
 
   const confirmProdSwitch = () => {

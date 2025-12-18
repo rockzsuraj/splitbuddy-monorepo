@@ -2,7 +2,13 @@
   "name": "@splitbuddy/mobile",
   "version": "1.0.0",
   "private": true,
+    "codegenConfig": {
+    "name": "EnvManager",
+    "type": "modules",
+    "jsSrcsDir": "./src/native"
+  },
   "scripts": {
+    "set:build": "node ../../scripts/setBuildNumber.js",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "lint": "eslint .",

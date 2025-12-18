@@ -27,7 +27,7 @@ export const lightTokens = {
 
   // Cards
   card: "#FFFFFF",
-  cardSoft: "#F7FAFF",
+  cardSoft: "#E6F0F3",
   elevationShadow: "rgba(0,0,0,0.06)",
 
   // Borders

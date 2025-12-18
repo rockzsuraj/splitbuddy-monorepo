@@ -6,7 +6,6 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.uimanager.ViewManager
 
 class EnvManagerPackage : ReactPackage {
-
   override fun createNativeModules(
     reactContext: ReactApplicationContext
   ): List<NativeModule> {
@@ -15,7 +14,5 @@ class EnvManagerPackage : ReactPackage {
 
   override fun createViewManagers(
     reactContext: ReactApplicationContext
-  ): List<ViewManager<*, *>> {
-    return emptyList()
-  }
+  ): List<ViewManager<*, *>> = emptyList()
 }
