@@ -2,13 +2,13 @@
   "name": "@splitbuddy/mobile",
   "version": "1.0.0",
   "private": true,
-    "codegenConfig": {
-    "name": "EnvManager",
-    "type": "modules",
-    "jsSrcsDir": "./src/native"
+  "codegenConfig": {
+  "libraries": []
   },
   "scripts": {
     "set:build": "node ../../scripts/setBuildNumber.js",
+    "android:clean": "rm -rf android/app/.cxx android/app/build && cd android && ./gradlew clean",
+    "android:build": "npx react-native codegen && cd android && ./gradlew assembleDebug",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "lint": "eslint .",
