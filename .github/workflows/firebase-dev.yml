@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: Build & Distribute Android
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.5.2
+        uses: - uses: wzieba/Firebase-Distribution-Github-Action@v1.7.1
         with:
           appId: "1:742527822495:android:bafa9eead14bbe843950aa"
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_DEV_SERVICE_ACCOUNT }}
