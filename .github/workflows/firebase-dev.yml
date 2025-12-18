@@ -14,11 +14,11 @@ jobs:
       - name: Build & Distribute Android
         uses: wzieba/Firebase-Distribution-Github-Action@v1.7.1
         with:
-          appId: "1:742527822495:android:bafa9eead14bbe843950aa"
-          serviceCredentialsFileContent: ${{ secrets.FIREBASE_DEV_SERVICE_ACCOUNT }}
-          file: apps/mobile/android/app/build/outputs/apk/release/app-release.apk
+          appId: 1:742527822495:android:bafa9eead14bbe843950aa
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}  # This was missing!
+          file: apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk     # Use debug APK
           groups: dev-testers
-          releaseNotes: "Dev build from develop branch"
+          releaseNotes: Dev build from develop branch
         env:
           # Build APK first
           BUILD_COMMAND: |
