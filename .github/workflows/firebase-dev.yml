@@ -13,6 +13,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # ---- Setup Node & pnpm ----
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # ---- Setup Java ----
       - name: Set up JDK
         uses: actions/setup-java@v4.2.1
         with:
@@ -20,12 +36,14 @@ jobs:
           java-version: 17
           cache: gradle
 
+      # ---- Build Android Debug APK ----
       - name: Build Debug APK
         run: |
           cd apps/mobile/android
           chmod +x ./gradlew
           ./gradlew clean assembleDebug
 
+      # ---- Upload to Firebase ----
       - name: Upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.7.1
         with:
