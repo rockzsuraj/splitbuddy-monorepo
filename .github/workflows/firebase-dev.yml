@@ -11,38 +11,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Build & Distribute Android
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.5.2
         with:
-          node-version: 20
-          cache: 'pnpm'
-      
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-      
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.1'
-          bundler-cache: true
-      
-      - name: Install Java 17 (Android)
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      
-      - name: Install Android SDK
-        uses: android-actions/setup-android@v3
-      
-      - name: Distribute Android
-        run: |
-          cd apps/mobile/android
-          bundle install
-          bundle exec fastlane android distribute
+          appId: "1:742527822495:android:bafa9eead14bbe843950aa"
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_DEV_SERVICE_ACCOUNT }}
+          file: apps/mobile/android/app/build/outputs/apk/release/app-release.apk
+          groups: dev-testers
+          releaseNotes: "Dev build from develop branch"
         env:
-          ANDROID_APP_ID: "1:742527822495:android:bafa9eead14bbe843950aa"
-          FIREBASE_APP_DISTRIBUTION_SERVICE_CREDENTIALS: ${{ secrets.FIREBASE_DEV_SERVICE_ACCOUNT }}
+          # Build APK first
+          BUILD_COMMAND: |
+            chmod +x ./android/gradlew
+            cd apps/mobile/android
+            ./gradlew clean assembleRelease
