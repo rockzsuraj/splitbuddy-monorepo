@@ -13,16 +13,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # ---- Node & pnpm ----
+      # ---- Node ----
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
+      # ---- pnpm (version comes from package.json) ----
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9
           run_install: false
 
       - name: Install dependencies
@@ -36,7 +36,7 @@ jobs:
           java-version: 17
           cache: gradle
 
-      # ---- Build ----
+      # ---- Android Build ----
       - name: Build Debug APK
         run: |
           cd apps/mobile/android
