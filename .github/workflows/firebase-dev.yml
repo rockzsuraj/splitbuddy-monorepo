@@ -23,9 +23,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       
+      - name: Install Ruby & Bundler
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+      
       - name: Distribute Android
-        run: pnpm --filter @splitbuddy/mobile exec -- fastlane android distribute
-        working-directory: apps/mobile/android
+        run: |
+          cd apps/mobile/android
+          bundle install
+          bundle exec fastlane android distribute
         env:
           ANDROID_APP_ID: "1:742527822495:android:bafa9eead14bbe843950aa"
           FIREBASE_APP_DISTRIBUTION_SERVICE_CREDENTIALS: ${{ secrets.FIREBASE_DEV_SERVICE_ACCOUNT }}
