@@ -82,8 +82,8 @@ android {
         applicationId "com.splitbuddy"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 9000047
-        versionName "9.3.3"
+        versionCode 2
+        versionName "1.0.0"
     }
     signingConfigs {
         debug {

@@ -27,10 +27,17 @@ class EnvManager: NSObject {
     rejecter reject: @escaping RCTPromiseRejectBlock
   ) {
     let info = Bundle.main.infoDictionary ?? [:]
+    let isRelease: Bool
+      #if DEBUG
+        isRelease = false
+      #else
+        isRelease = true
+      #endif
     resolve([
       "version": info["CFBundleShortVersionString"] as? String ?? "0",
       "buildNumber": info["CFBundleVersion"] as? String ?? "0",
-      "platform": "ios"
+      "platform": "ios",
+      "isRelease": isRelease
     ])
   }
 

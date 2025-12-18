@@ -7,6 +7,7 @@ type EnvManagerType = {
     version: string;
     buildNumber: string;
     platform: string;
+    isRelease: boolean;
   }>;
 };
 

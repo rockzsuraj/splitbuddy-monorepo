@@ -30,6 +30,7 @@ class EnvManagerModule(
     map.putString("version", BuildConfig.VERSION_NAME)
     map.putString("buildNumber", BuildConfig.VERSION_CODE.toString())
     map.putString("platform", "android")
+    map.putBoolean("isRelease", !BuildConfig.DEBUG)
     promise.resolve(map)
   }
 }

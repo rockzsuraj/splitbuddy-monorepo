@@ -20,9 +20,11 @@ type Props = {
 };
 
 type BuildInfo = {
-  version: string;
-  buildNumber: string;
-};
+    version: string;
+    buildNumber: string;
+    platform: string;
+    isRelease: boolean;
+  }
 
 type AppEnv = 'dev' | 'staging' | 'prod';
 
@@ -96,7 +98,7 @@ useEffect(() => {
     setShowSecrets(true);
   };
 
-  if (!__DEV__) return null;
+  if (!buildInfo || buildInfo?.isRelease) return null;
 
   return (
     <Modal visible={visible} transparent animationType="fade">

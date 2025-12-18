@@ -9,6 +9,7 @@ type Props = {
 type BuildInfo = {
   version: string;
   buildNumber: string;
+  isRelease: boolean;
 };
 
 type AppEnv = 'dev' | 'staging' | 'prod';
@@ -38,7 +39,7 @@ export default function DevBadge({ onPress }: Props) {
     };
   }, []);
 
-  if (!__DEV__ || !buildInfo || !env) return null;
+  if (!buildInfo || buildInfo.isRelease) return null;
 
   return (
     <View pointerEvents="box-none" style={styles.wrapper}>
