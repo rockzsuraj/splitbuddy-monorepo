@@ -13,8 +13,7 @@
   NODE_VERSION = "18"
 
 [functions]
-  node_bundler = "esbuild"
-  external_node_modules = ["express"]
+  node_bundler = "zisi"
   included_files = ["src/docs/swagger.yaml"]
 
 [[redirects]]
