@@ -6,7 +6,7 @@
     pnpm install --frozen-lockfile &&
     pnpm turbo build --filter=@splitbuddy/api
   """
-  functions = "netlify/functions"
+  functions = "apps/api/netlify/functions"
   publish = "public"
 
 [build.environment]

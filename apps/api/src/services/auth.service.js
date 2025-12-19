@@ -13,6 +13,7 @@ const { validateRefreshToken } = require('./user.service');
 const cloudinary = require('../config/cloudinary');
 const streamifier = require('streamifier');
 const redisClient = require('../config/redisClient');
+const { executeQuery } = require('../config/database');
 
 async function generateTokens(user) {
   // 1. Generate token (80-character hex)
