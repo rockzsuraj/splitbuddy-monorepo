@@ -1,12 +1,13 @@
 [build]
   command = """
     corepack enable &&
-    corepack prepare pnpm@stable --activate &&
+    corepack prepare pnpm@10.26.0 --activate &&
+    cd /opt/build/repo &&
     pnpm install --frozen-lockfile &&
     pnpm turbo build --filter=api...[origin/main]
   """
-  functions = "netlify/functions"  # ✅ Your serverless functions
-  publish = "public"              # ✅ Static assets
+  functions = "netlify/functions"
+  publish = "public"
 
 [[redirects]]
   from = "/*"
@@ -15,4 +16,4 @@
   force = true
 
 [functions]
-  included_files = ["src/docs/swagger.yaml"]  # ✅ Swagger docs
+  included_files = ["src/docs/swagger.yaml"]
