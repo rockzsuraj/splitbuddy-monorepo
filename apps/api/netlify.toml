@@ -13,8 +13,7 @@
   NODE_VERSION = "18"
 
 [functions]
-  node_bundler = "zisi"
-  included_files = ["src/docs/swagger.yaml"]
+  node_bundler = "esbuild"
 
 [[redirects]]
   from = "/*"
