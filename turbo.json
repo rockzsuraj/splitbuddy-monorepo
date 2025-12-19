@@ -3,7 +3,15 @@
     "dev": { "cache": false },
     "build": {
       "dependsOn": ["^build"],
-      "outputs": []
+      "outputs": ["dist/**", "build/**"] 
+    },
+    "build:api": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "build:mobile": {
+      "dependsOn": ["^build"],
+      "outputs": ["build/**", "android/**", "ios/**"]
     },
     "lint": {},
     "test": {}
