@@ -89,12 +89,6 @@ importers:
       streamifier:
         specifier: ^0.1.1
         version: 0.1.1
-      swagger-ui-dist:
-        specifier: ^5.25.2
-        version: 5.31.0
-      swagger-ui-express:
-        specifier: ^5.0.1
-        version: 5.0.1(express@4.21.2)
       validator:
         specifier: ^13.15.15
         version: 13.15.23
@@ -1362,9 +1356,6 @@ packages:
   '@rneui/themed@https://codeload.github.com/react-native-elements/react-native-elements/tar.gz/91504b76aa9be034f318ef2af1ef974e73b71673':
     resolution: {tarball: https://codeload.github.com/react-native-elements/react-native-elements/tar.gz/91504b76aa9be034f318ef2af1ef974e73b71673}
     version: 5.0.0-beta.1
-
-  '@scarf/scarf@1.4.0':
-    resolution: {integrity: sha512-xxeapPiUXdZAE3che6f3xogoJPeZgig6omHEy1rIY5WVsB3H2BHNnZH+gHG6x91SCWyQCzWGsuL2Hh3ClO5/qQ==}
 
   '@selderee/plugin-htmlparser2@0.11.0':
     resolution: {integrity: sha512-P33hHGdldxGabLFjPPpaTxVolMrzrcegejx+0GxjrIb9Zv48D8yAIA/QTDR2dFl7Uz7urX8aX6+5bCZslr+gWQ==}
@@ -4500,15 +4491,6 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  swagger-ui-dist@5.31.0:
-    resolution: {integrity: sha512-zSUTIck02fSga6rc0RZP3b7J7wgHXwLea8ZjgLA3Vgnb8QeOl3Wou2/j5QkzSGeoz6HusP/coYuJl33aQxQZpg==}
-
-  swagger-ui-express@5.0.1:
-    resolution: {integrity: sha512-SrNU3RiBGTLLmFU8GIJdOdanJTl4TOmT27tt3bWWHppqYmAZ6IDuEuBvMU6nZq0zLEe6b/1rACXCgLZqO6ZfrA==}
-    engines: {node: '>= v0.10.32'}
-    peerDependencies:
-      express: '>=4.0.0 || >=5.0.0-beta'
-
   tarn@3.0.2:
     resolution: {integrity: sha512-51LAVKUSZSVfI05vjPESNc5vwqqZpbXCsU+/+wxlOrUjk2SnFTt97v9ZgQrD4YmxYW1Px6w2KjaDitCfkvgxMQ==}
     engines: {node: '>=8.0.0'}
@@ -6473,8 +6455,6 @@ snapshots:
       '@rneui/themed-edge': '@rneui/themed@https://codeload.github.com/react-native-elements/react-native-elements/tar.gz/91504b76aa9be034f318ef2af1ef974e73b71673'
 
   '@rneui/themed@https://codeload.github.com/react-native-elements/react-native-elements/tar.gz/91504b76aa9be034f318ef2af1ef974e73b71673': {}
-
-  '@scarf/scarf@1.4.0': {}
 
   '@selderee/plugin-htmlparser2@0.11.0':
     dependencies:
@@ -10298,15 +10278,6 @@ snapshots:
       has-flag: 4.0.0
 
   supports-preserve-symlinks-flag@1.0.0: {}
-
-  swagger-ui-dist@5.31.0:
-    dependencies:
-      '@scarf/scarf': 1.4.0
-
-  swagger-ui-express@5.0.1(express@4.21.2):
-    dependencies:
-      express: 4.21.2
-      swagger-ui-dist: 5.31.0
 
   tarn@3.0.2: {}
 

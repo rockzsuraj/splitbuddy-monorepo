@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authRoutes = require('./auth.routes');
 const userRoutes = require('./user.routes');
-const docsRoutes = require('./docs.routes');
+// // const docsRoutes = require('./docs.routes');
 const { notFoundHandler } = require('../utils/apiError');
 const groupRoutes = require('./group.routes');
 const { testConnection } = require('../config/database');
@@ -34,10 +34,10 @@ router.use('/v1/auth', authRoutes);
 router.use('/v1/users', userRoutes);
 router.use('/v1/groups', groupRoutes);
 
-// Documentation route (only in development)
-if (process.env.NODE_ENV === 'development') {
-  router.use('/docs', docsRoutes);
-}
+// Documentation route disabled
+// if (process.env.NODE_ENV === 'development') {
+//   router.use('/docs', docsRoutes);
+// }
 
 // Handle 404 Not Found
 router.use(notFoundHandler);
