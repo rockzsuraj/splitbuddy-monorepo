@@ -1,5 +1,5 @@
 const app = require('./app');
-const { testConnection, initPool } = require('./src/config/database');
+const { testConnection } = require('./src/config/database');
 const { PORT } = require('./src/config/env');
 const logger = require('./src/utils/logger');
 const redisClient = require('./src/config/redisClient');

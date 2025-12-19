@@ -8,6 +8,8 @@ RCT_EXTERN_METHOD(getEnv:(RCTPromiseResolveBlock)resolve
 
 RCT_EXTERN_METHOD(switchEnv:(NSString *)env)
 
+RCT_EXTERN_METHOD(restartApp)
+
 RCT_EXTERN_METHOD(getBuildInfo:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 

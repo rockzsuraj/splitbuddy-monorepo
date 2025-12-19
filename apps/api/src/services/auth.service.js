@@ -10,8 +10,6 @@ const crypto = require('crypto');
 const path = require('path');
 const pug = require('pug');
 const { validateRefreshToken } = require('./user.service');
-const { updateMyAvatar: updateMyProfileImage } = require('../middlewares/uploadAvatar');
-const { initPool } = require('../config/database');
 const cloudinary = require('../config/cloudinary');
 const streamifier = require('streamifier');
 const redisClient = require('../config/redisClient');
@@ -271,11 +269,11 @@ const updateMyAvatar = async (req, res) => {
         const imageUrl = result.secure_url;
 
         try {
-          const { rows } = await initPool().query(
+          const { rows } = await executeQuery(
             `UPDATE users
-             SET image_url = $1
-             WHERE id = $2
-             RETURNING *`,
+            SET image_url = $1
+            WHERE id = $2
+            RETURNING id, image_url`,
             [imageUrl, userId]
           );
 

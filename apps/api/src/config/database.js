@@ -6,23 +6,26 @@ const pool = new Pool({
 });
 
 async function executeQuery(query, params = []) {
-    return executeQueryWithLogging(async (q, p) => {
-        return await pool.query(q, p);
-    }, query, params);
+    return executeQueryWithLogging(
+        (q, p) => pool.query(q, p),
+        query,
+        params
+    );
 }
 
 async function initPool() {
     try {
-        await pool.connect();
-        console.log('Database connected');
+        await pool.query('SELECT 1');
+        console.log('✅ Database pool ready');
     } catch (err) {
-        console.error('Database connection failed:', err);
+        console.error('❌ Database init failed:', err);
+        process.exit(1);
     }
 }
 
 async function testConnection() {
     try {
-        const result = await pool.query('SELECT NOW()');
+        await pool.query('SELECT NOW()');
         console.log('✅ Database connection test successful');
         return true;
     } catch (err) {
@@ -31,4 +34,9 @@ async function testConnection() {
     }
 }
 
-module.exports = { executeQuery, initPool, testConnection };
+module.exports = {
+    pool,          // 👈 REQUIRED for transactions
+    executeQuery,
+    initPool,
+    testConnection,
+};

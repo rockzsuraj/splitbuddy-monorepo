@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 import React
 
 @objc(EnvManager)
@@ -21,12 +22,28 @@ class EnvManager: NSObject {
 #endif
   }
 
-   @objc
-  func restartApp() {
-    DispatchQueue.main.async {
-      exit(0) // iOS restarts app process
+@objc
+func restartApp() {
+  DispatchQueue.main.async {
+    guard
+      let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+      let window = appDelegate.window,
+      let factory = appDelegate.reactNativeFactory
+    else {
+      return
     }
+
+    // Clear existing root controller
+    window.rootViewController = nil
+
+    // Restart React Native cleanly
+    factory.startReactNative(
+      withModuleName: "SplitBuddy",
+      in: window,
+      launchOptions: nil
+    )
   }
+}
 
   @objc
   func getBuildInfo(
