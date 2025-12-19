@@ -26,6 +26,9 @@ importers:
       bcryptjs:
         specifier: ^3.0.2
         version: 3.0.3
+      body-parser:
+        specifier: ^2.2.1
+        version: 2.2.1
       cloudinary:
         specifier: ^2.8.0
         version: 2.8.0
