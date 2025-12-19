@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Pressable, Text, StyleSheet, View } from 'react-native';
 import EnvManager  from '@/native/EnvManager';
+import { AppContext } from '@/Context/AppProvider';
 
 type Props = {
   onPress: () => void;
@@ -15,40 +16,19 @@ type BuildInfo = {
 type AppEnv = 'dev' | 'staging' | 'prod';
 
 export default function DevBadge({ onPress }: Props) {
-  const [buildInfo, setBuildInfo] = useState<BuildInfo | null>(null);
-  const [env, setEnv] = useState<AppEnv | null>(null);
-
-  useEffect(() => {
-    let mounted = true;
-
-    Promise.all([
-      EnvManager.getBuildInfo(),
-      EnvManager.getEnv(),
-    ])
-      .then(([build, currentEnv]) => {
-        if (!mounted) return;
-        setBuildInfo(build);
-        setEnv(currentEnv);
-      })
-      .catch(err => {
-        console.warn('DevBadge error', err);
-      });
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
+  const { appEnv, buildInfo } = useContext(AppContext);
 
   if (!buildInfo || buildInfo.isRelease) return null;
+   if (!appEnv) return null;
 
   return (
     <View pointerEvents="box-none" style={styles.wrapper}>
       <Pressable
-        style={[styles.badge, stylesByEnv[env]]}
+        style={[styles.badge, stylesByEnv[appEnv]]}
         onPress={onPress}
       >
         <Text style={styles.text}>
-          {env.toUpperCase()} • v{buildInfo.version} ({buildInfo.buildNumber})
+          {appEnv.toUpperCase()} • v{buildInfo.version} ({buildInfo.buildNumber})
         </Text>
       </Pressable>
     </View>

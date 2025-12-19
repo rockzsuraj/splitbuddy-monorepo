@@ -11,7 +11,7 @@ class EnvManager: NSObject {
     _ resolve: @escaping RCTPromiseResolveBlock,
     rejecter reject: @escaping RCTPromiseRejectBlock
   ) {
-    resolve(defaults.string(forKey: "DEV_ENV") ?? "dev")
+    resolve(defaults.string(forKey: "DEV_ENV") ?? "staging")
   }
 
   @objc
@@ -19,6 +19,13 @@ class EnvManager: NSObject {
 #if DEBUG
     defaults.set(env, forKey: "DEV_ENV")
 #endif
+  }
+
+   @objc
+  func restartApp() {
+    DispatchQueue.main.async {
+      exit(0) // iOS restarts app process
+    }
   }
 
   @objc

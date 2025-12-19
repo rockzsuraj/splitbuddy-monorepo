@@ -1,20 +1,50 @@
 import { NativeModules, Platform } from 'react-native';
 
-type EnvManagerType = {
-  getEnv(): Promise<string>;
-  switchEnv(env: string): void;
-  getBuildInfo(): Promise<{
-    version: string;
-    buildNumber: string;
-    platform: string;
-    isRelease: boolean;
-  }>;
+type BuildInfo = {
+  version: string;
+  buildNumber: string;
+  platform: string;
+  isRelease: boolean;
 };
 
-const EnvManager: EnvManagerType = NativeModules.EnvManager;
+type EnvManagerType = {
+  getEnv(): Promise<'dev' | 'staging' | 'prod'>;
+  switchEnv(env: 'dev' | 'staging' | 'prod'): void;
+  getBuildInfo(): Promise<BuildInfo>;
+  restartApp(): void;
+};
 
-if (__DEV__ && !EnvManager) {
-  throw new Error('EnvManager native module is not linked');
+const NativeEnvManager = NativeModules.EnvManager;
+
+function assertLinked() {
+  if (!NativeEnvManager) {
+    throw new Error(
+      `[EnvManager] Native module is not linked on ${Platform.OS}. ` +
+      `Make sure you rebuilt the app after adding the native module.`
+    );
+  }
 }
+
+const EnvManager: EnvManagerType = {
+  async getEnv() {
+    assertLinked();
+    return NativeEnvManager.getEnv();
+  },
+
+  switchEnv(env) {
+    assertLinked();
+    NativeEnvManager.switchEnv(env);
+  },
+
+  restartApp() {
+    assertLinked();
+    NativeEnvManager.restartApp();
+  },
+
+  async getBuildInfo() {
+    assertLinked();
+    return NativeEnvManager.getBuildInfo();
+  },
+};
 
 export default EnvManager;

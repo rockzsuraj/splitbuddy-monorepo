@@ -5,6 +5,7 @@ import { getAuthRefreshToken, getAuthToken } from '../lib/storage';
 import { refreshAccessToken } from "./services/authservice";
 import { CustomAxiosRequestConfig } from "../types/type";
 import { getBaseUrl } from "@/config/api";
+import { logger } from "@/devtools/Logger";
 
 export const apiClient = axios.create({
   timeout: 10000,
@@ -17,7 +18,7 @@ export async function initApiClient() {
 // Request interceptor to add JWT token to headers
 apiClient.interceptors.request.use(async (config) => {
   const token = await getAuthToken();
-  console.log('token', token);
+  console.log('API Request:', config.method?.toUpperCase(), config.url);
   
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -27,9 +28,15 @@ apiClient.interceptors.request.use(async (config) => {
 
 // Response interceptor for global error handling and token refresh
 apiClient.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log('API Success:', response.config.method?.toUpperCase(), response.config.url, response.status);
+    return response;
+  },
   async (error: AxiosError) => {
     const originalRequest = error.config as CustomAxiosRequestConfig;
+    
+    // Log API error
+    logger.logApiError(error, `${originalRequest?.method?.toUpperCase()} ${originalRequest?.url}`);
 
     if (error.response?.status === 401) {
       // ❌ If this request opts out of refresh, just reject
@@ -50,6 +57,7 @@ apiClient.interceptors.response.use(
             return apiClient(originalRequest);
           }
         } catch (refreshError) {
+          logger.logApiError(refreshError, 'Token Refresh');
           return Promise.reject(refreshError);
         }
       }

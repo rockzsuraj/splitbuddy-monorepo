@@ -1,6 +1,7 @@
 import React, { createContext, ReactNode, useEffect, useReducer } from 'react';
 import { Appearance } from 'react-native';
 import { User } from '../types/User';
+import EnvManager from '@/native/EnvManager';
 
 type Theme = 'light' | 'dark';
 
@@ -13,6 +14,13 @@ interface State {
     loading: boolean;
     welcomeMessage: string;
     theme: Theme;
+    appEnv: 'dev' | 'staging' | 'prod' | null;
+    buildInfo: {
+        version: string;
+        buildNumber: string;
+        platform: string;
+        isRelease: boolean;
+    } | null;
 }
 
 type Action =
@@ -28,7 +36,9 @@ type Action =
     | { type: 'SET_LOADING'; payload: boolean }
     | { type: 'SET_WELCOME_MESSAGE'; payload: string }
     | { type: 'SET_THEME'; payload: Theme }
-    | { type: 'TOGGLE_THEME' };
+    | { type: 'TOGGLE_THEME' }
+    | { type: 'SET_APP_ENV'; payload: 'dev' | 'staging' | 'prod' }
+    | { type: 'SET_BUILD_INFO'; payload: State['buildInfo'] };
 
 interface Context {
     state: State;
@@ -40,6 +50,9 @@ interface Context {
     setWelcomeMessage: (message: string) => void;
     setTheme: (theme: Theme) => void;
     toggleTheme: () => void;
+    appEnv: 'dev' | 'staging' | 'prod' | null;
+    buildInfo: State['buildInfo'];
+    setAppEnv: (env: 'dev' | 'staging' | 'prod') => void;
 }
 
 const systemScheme = Appearance.getColorScheme(); // 'light' | 'dark' | null
@@ -53,6 +66,8 @@ const initialState: State = {
     loading: false,
     welcomeMessage: '',
     theme: systemScheme === 'dark' ? 'dark' : 'light', // 🔹 start with system theme
+    appEnv: null,
+    buildInfo: null,
 };
 
 function reducer(state: State, action: Action): State {
@@ -79,6 +94,10 @@ function reducer(state: State, action: Action): State {
             return { ...state, theme: action.payload };
         case 'TOGGLE_THEME':
             return { ...state, theme: state.theme === 'light' ? 'dark' : 'light' };
+        case 'SET_APP_ENV':
+            return { ...state, appEnv: action.payload };
+        case 'SET_BUILD_INFO':
+            return { ...state, buildInfo: action.payload };
         default:
             return state;
     }
@@ -94,6 +113,9 @@ export const AppContext = createContext<Context>({
     setWelcomeMessage: () => { },
     setTheme: () => { },
     toggleTheme: () => { },
+    setAppEnv: () => { },
+    appEnv: null,
+    buildInfo: null,
 });
 
 interface Props {
@@ -135,6 +157,17 @@ export function AppProvider({ children }: Props) {
         dispatch({ type: 'TOGGLE_THEME' });
     }
 
+    function setAppEnv(env: 'dev' | 'staging' | 'prod') {
+        // 1️⃣ persist to native storage
+        EnvManager.switchEnv(env);
+
+        // 2️⃣ update global state immediately
+        dispatch({ type: 'SET_APP_ENV', payload: env });
+        setTimeout(() => {
+            EnvManager.restartApp();
+        }, 300);
+    }
+
     // 🔥 Auto-update theme when system theme changes
     useEffect(() => {
         const subscription = Appearance.addChangeListener(({ colorScheme }) => {
@@ -144,6 +177,16 @@ export function AppProvider({ children }: Props) {
         });
 
         return () => subscription.remove();
+    }, []);
+
+    useEffect(() => {
+        Promise.all([
+            EnvManager.getEnv(),
+            EnvManager.getBuildInfo(),
+        ]).then(([env, build]) => {
+            dispatch({ type: 'SET_APP_ENV', payload: env });
+            dispatch({ type: 'SET_BUILD_INFO', payload: build });
+        });
     }, []);
 
     return (
@@ -158,6 +201,9 @@ export function AppProvider({ children }: Props) {
                 setWelcomeMessage,
                 setTheme,
                 toggleTheme,
+                setAppEnv,
+                appEnv: state.appEnv,
+                buildInfo: state.buildInfo,
             }}
         >
             {children}

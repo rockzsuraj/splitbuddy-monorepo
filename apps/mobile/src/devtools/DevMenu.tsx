@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   View,
   Text,
@@ -8,56 +8,33 @@ import {
   Pressable,
   ScrollView,
 } from 'react-native';
-import  EnvManager  from '@/native/EnvManager';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import { DEV_ENCRYPTED_KEYS } from '@/devtools/devEncryptedKeys';
-import { DevSettings } from 'react-native';
-
+import { AppContext } from '@/Context/AppProvider';
+import LogViewer from './LogViewer';
 
 type Props = {
   visible: boolean;
   onClose: () => void;
 };
 
-type BuildInfo = {
-    version: string;
-    buildNumber: string;
-    platform: string;
-    isRelease: boolean;
-  }
-
 type AppEnv = 'dev' | 'staging' | 'prod';
 
 export default function DevMenuModal({ visible, onClose }: Props) {
-  const [buildInfo, setBuildInfo] = useState<BuildInfo | null>(null);
-  const [env, setEnv] = useState<AppEnv | null>(null);
-
+  const { appEnv, buildInfo, setAppEnv } = useContext(AppContext);
   const [showSecrets, setShowSecrets] = useState(false);
+  const [showLogs, setShowLogs] = useState(false);
   const [secretData, setSecretData] = useState<
     Record<string, { value: string; sensitive: boolean }>
   >({});
 
-useEffect(() => {
-  if (!visible || !__DEV__) return;
-
-  Promise.all([
-    EnvManager.getBuildInfo(),  // ✅ Promise resolves
-    EnvManager.getEnv(),        // ✅ Promise resolves
-  ]).then(([build, currentEnv]) => {
-    setBuildInfo(build);
-    setEnv(currentEnv);
-  });
-}, [visible]);
-  /* -------------------- ENV SWITCH -------------------- */
+  // 🔴 Hide in release builds
+  if (!buildInfo || buildInfo.isRelease) return null;
 
   const switchEnv = (nextEnv: AppEnv) => {
-    console.log('nextEnv', nextEnv);
-    console.log('env', env);
-    
-    
-    if (nextEnv === env) return;
-    EnvManager.switchEnv(nextEnv);
-    DevSettings.reload();
+    if (nextEnv === appEnv) return;
+
+    setAppEnv(nextEnv);
   };
 
   const confirmProdSwitch = () => {
@@ -75,22 +52,16 @@ useEffect(() => {
     );
   };
 
-  /* -------------------- SECURE STORAGE -------------------- */
-
   const loadEncryptedStorage = async () => {
     const map: Record<string, { value: string; sensitive: boolean }> = {};
 
     for (const item of DEV_ENCRYPTED_KEYS) {
-      try {
-        const value = await EncryptedStorage.getItem(item.key);
-        if (value != null) {
-          map[item.label] = {
-            value,
-            sensitive: item.sensitive,
-          };
-        }
-      } catch {
-        // ignore
+      const value = await EncryptedStorage.getItem(item.key);
+      if (value != null) {
+        map[item.label] = {
+          value,
+          sensitive: item.sensitive,
+        };
       }
     }
 
@@ -98,123 +69,88 @@ useEffect(() => {
     setShowSecrets(true);
   };
 
-  if (!buildInfo || buildInfo?.isRelease) return null;
-
   return (
     <Modal visible={visible} transparent animationType="fade">
       <View style={styles.overlay}>
         <View style={styles.container}>
-          {/* ---------- Header ---------- */}
           <Text style={styles.title}>Developer Menu</Text>
 
-          {/* ---------- Env Status ---------- */}
+          {/* ENV STATUS */}
           <View style={styles.envRow}>
             <Text style={styles.label}>Current Environment</Text>
-            <View style={[styles.envPill, envStyles[env ?? 'dev']]}>
+            <View style={[styles.envPill, envStyles[appEnv ?? 'dev']]}>
               <Text style={styles.envText}>
-                {env?.toUpperCase() ?? '—'}
+                {appEnv?.toUpperCase() ?? '—'}
               </Text>
             </View>
           </View>
 
-          {/* ---------- Build Info ---------- */}
+          {/* BUILD INFO */}
           <View style={styles.buildBox}>
             <Text style={styles.buildText}>
-              Version {buildInfo?.version ?? '—'}
+              Version {buildInfo.version}
             </Text>
             <Text style={styles.buildText}>
-              Build {buildInfo?.buildNumber ?? '—'}
+              Build {buildInfo.buildNumber}
             </Text>
           </View>
 
           <View style={styles.divider} />
 
-          {/* ---------- Env Switch ---------- */}
           <Text style={styles.section}>Switch Environment</Text>
 
           <Pressable
-            style={[
-              styles.envButton,
-              env === 'dev' && styles.envButtonActive,
-            ]}
-            disabled={env === 'dev'}
+            style={[styles.envButton, appEnv === 'dev' && styles.envButtonActive]}
+            disabled={appEnv === 'dev'}
             onPress={() => switchEnv('dev')}
           >
-            <Text style={styles.envButtonText}>DEV</Text>
+            <Text>DEV</Text>
           </Pressable>
 
           <Pressable
-            style={[
-              styles.envButton,
-              env === 'staging' && styles.envButtonActive,
-            ]}
-            disabled={env === 'staging'}
+            style={[styles.envButton, appEnv === 'staging' && styles.envButtonActive]}
+            disabled={appEnv === 'staging'}
             onPress={() => switchEnv('staging')}
           >
-            <Text style={styles.envButtonText}>STAGING</Text>
+            <Text>STAGING</Text>
           </Pressable>
 
-          <Pressable
-            style={styles.prodButton}
-            onPress={confirmProdSwitch}
-          >
+          <Pressable style={styles.prodButton} onPress={confirmProdSwitch}>
             <Text style={styles.prodText}>PRODUCTION</Text>
           </Pressable>
 
           <View style={styles.divider} />
 
-          {/* ---------- Storage Inspectors ---------- */}
-          <Text style={styles.section}>Storage Inspectors</Text>
+          <Pressable style={styles.envButton} onPress={loadEncryptedStorage}>
+            <Text>View Secure Storage</Text>
+          </Pressable>
 
-          <Pressable
-            style={styles.envButton}
-            onPress={loadEncryptedStorage}
-          >
-            <Text style={styles.envButtonText}>
-              View Secure Storage
-            </Text>
+          <Pressable style={styles.logButton} onPress={() => setShowLogs(true)}>
+            <Text style={styles.logButtonText}>📋 View Debug Logs</Text>
           </Pressable>
 
           {showSecrets && (
-            <>
-              <View style={styles.divider} />
-              <Text style={styles.section}>Encrypted Storage</Text>
-
-              <ScrollView style={{ maxHeight: 220 }}>
-                {Object.entries(secretData).map(
-                  ([label, { value, sensitive }]) => (
-                    <View key={label} style={styles.kvRow}>
-                      <Text style={styles.kvKey}>{label}</Text>
-                      <Text style={styles.kvValue}>
-                        {sensitive
-                          ? value.slice(0, 12) + '••••••'
-                          : value}
-                      </Text>
-                    </View>
-                  ),
-                )}
-              </ScrollView>
-
-              <Pressable
-                onPress={() => setShowSecrets(false)}
-                style={styles.closeInline}
-              >
-                <Text style={styles.closeText}>Hide</Text>
-              </Pressable>
-            </>
+            <ScrollView style={{ maxHeight: 220 }}>
+              {Object.entries(secretData).map(([k, v]) => (
+                <Text key={k}>
+                  {k}: {v.sensitive ? v.value.slice(0, 8) + '••••' : v.value}
+                </Text>
+              ))}
+            </ScrollView>
           )}
-
-          {/* ---------- Footer ---------- */}
           <Pressable onPress={onClose} style={styles.close}>
             <Text style={styles.closeText}>Close</Text>
           </Pressable>
         </View>
       </View>
+      
+      <LogViewer 
+        visible={showLogs} 
+        onClose={() => setShowLogs(false)} 
+      />
     </Modal>
   );
 }
-
-/* -------------------- STYLES -------------------- */
 
 const styles = StyleSheet.create({
   overlay: {
@@ -317,6 +253,17 @@ const styles = StyleSheet.create({
   closeText: {
     color: '#007AFF',
     fontWeight: '600',
+  },
+  logButton: {
+    padding: 14,
+    borderRadius: 10,
+    backgroundColor: '#e3f2fd',
+    marginBottom: 10,
+    alignItems: 'center',
+  },
+  logButtonText: {
+    color: '#1976d2',
+    fontWeight: '700',
   },
 });
 

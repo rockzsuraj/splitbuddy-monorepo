@@ -7,7 +7,7 @@ const API_PATH = '/api/v1';
 export async function getBaseUrl() {
   const env = await EnvManager.getEnv();
 
-  if (env === 'dev' || env === 'staging') {
+  if (env === 'dev') {
     if (Platform.OS === 'android') {
       // Android emulator → host machine
       return `http://10.0.2.2:${DEV_PORT}${API_PATH}`;
@@ -15,8 +15,10 @@ export async function getBaseUrl() {
 
     // iOS simulator
     return `http://localhost:${DEV_PORT}${API_PATH}`;
+  }else if (env === 'staging') {
+    return `https://splitbuddy-1.netlify.app${API_PATH}`
   }
 
   // Production
-  return `https://splitbuddy-monorepo-api.vercel.app/${API_PATH}`;
+  return `https://splitbuddy-monorepo-api.vercel.app${API_PATH}`;
 }
