@@ -24,6 +24,7 @@
     "axios": "^1.10.0",
     "bcryptjs": "^3.0.2",
     "cloudinary": "^2.8.0",
+    "content-disposition": "^1.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.2.1",
